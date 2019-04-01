@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="">
+        <title>CSE457 - Final</title>
+
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+		<link rel="stylesheet" href="css/styles.css">
+    </head>
+    <body>
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<a class="navbar-brand" href="index.html">STL Crime Map</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active">
+						<a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Source
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+							<a class="dropdown-item" href="proposal.html">Proposal</a>
+							<a class="dropdown-item" href="https://github.com/sblair12/CSE457-Final" target="_blank">GitHub <i class="fas fa-external-link-alt"></i></a>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</nav>
+		<div class="content">
+			<h1>Basic Info</h1>
+			<span>
+			Crime Map
+			<br/>
+			Joel Ki – joelki (448565) – joelki@wustl.edu
+			<br/>
+			Shane Blair – sblair (448740) – sblair@wustl.edu
+			<br/>
+			<a href="https://github.com/sblair12/CSE457-Final/">			https://github.com/sblair12/CSE457-Final/</a>
+		</span>
+
+			<h1>Background and Motivation</h1>
+			<span>
+			&nbsp Our initial motivation was thinking back to how many crimes have occurred in our area recently. We live east of Kayaks, which has been a hotspot for many car thefts and burglaries recently. My roommates and I have been very worried about what to do about increasing crime, as WashU’s efforts to curb crime have seem to have no effect. This is understandable, as it is difficult to gather the resources necessary to properly fight crime in multiple locations. This is why we have decided to tackle the problem of dealing with crime around WashU, and we have come to the conclusion that, in order to combat this crime as students, the best thing that we can do is find ways to be safer. We can change our habits and behaviors easily, but there must be a way to know what behaviors are safer than others. This is where the visualization of data can come into play.
+			<br/><br/>
+			&nbsp WashU does not currently have any way to see much about the crimes that occur in the area. There are crime maps available to see the locations of crimes that occur, but these maps are not focused on WashU, instead they are general municipality crime zones. Further, these crime maps only allow the view of one aspect of crime: location. We believe that there is more to the patterns of crime than just location, and we hope that what we will have to present at the end of the semester for this project will allow users to better understand the patterns of crime in the WashU area by showcasing the data through interaction and discovery.
+		</span>
+
+			<h1>Project Objectives</h1>
+			<span>
+			We hope to answer the questions that follow:
+			<ul>
+				<li>What crimes are occurring in the WashU area?</li>
+				<li>What are ways that these crimes can be visualized, for example by location, by time, by description?</li>
+				<li>What is the best way to organize the crimes in a display for the user? Does one of the visualization methods above stand out from the rest?</li>
+				<li>What are the trends in the crime data that are most crucial to helping us as students be safe?</li>
+				<li>Are there certain locations, times, or items that lead to the highest rates of crime? Are there other aspects of crime other than those three that affect those levels?</li>
+			</ul>
+			<br/>
+			Benefits:
+			<ul>
+				<li>Improve the safety of students with minimal/no cost to students or the university</li>
+				<li>Discovery of trends that could aid in the addition of resources by the police/university</li>
+				<li>Better understanding of the nature of crime in our area, in a nondiscriminatory way</li>
+			</ul>
+		</span>
+
+			<h1>Data</h1>
+			<span>
+			Our data will be collected from WashU’s Daily Crime Log and Crime Alerts Archive:
+			<ul>
+				<li>
+					<a href="https://police.wustl.edu/Pages/Daily-Crime-Log-Archive.aspx">https://police.wustl.edu/Pages/Daily-Crime-Log-Archive.aspx</a>
+				</li>
+				<li>
+					<a href="https://police.wustl.edu/Pages/Crime-Alerts-Archive.aspx">https://police.wustl.edu/Pages/Crime-Alerts-Archive.aspx</a>
+				</li>
+			</ul>
+		</span>
+
+			<h1>Data Processing</h1>
+			<span>
+			&nbsp Both of the sources above provide data in an HTML format. There is no ability to download the format as a CSV or JSON, so this means that we will have to scrape the data from the site and format it ourselves. We expect this to be a moderate task to complete, as both sites require user navigation to reach other portions of the data. We plan to scrape the raw data using Javascript/Python code or libraries, where available. Once we have the raw data, we will have to clean up the fields associated with time/date of the crime and the location of the crime. Currently, the provided locations are vague and not very useful, so we plan to use a geocoding service (like Google Maps API) in order to turn rough searches of street names into actual GPS coordinates. We expect that this will not be the most accurate, but it is the best that we can do given the inaccuracies of the data already present. We also hope to utilize crime descriptions in order to tokenize important words, like articles stolen, in order to categorize crimes. This data processing will also be done in Javascript/Python.
+		</span>
+
+			<h1>Visualization Design</h1>
+			<div class="indent">
+				<h2>Brainstorming</h2>
+				<img src="sketches/sketch_1.jpg" width="1000px">
+				<br/>
+				<h2>Initial Design 1</h2>
+				<img src="sketches/sketch_3.jpg" width="1000px">
+				<br/>
+				<h2>Initial Design 2</h2>
+				<img src="sketches/sketch_4.jpg" width="1000px">
+				<br/>
+				<h2>Initial Design 3</h2>
+				<img src="sketches/sketch_2.jpg" width="1000px">
+				<br/>
+				<h2>Final Design</h2>
+				<img src="sketches/sketch_5.jpg" width="1000px">
+			</div>
+
+			<h1>Must-Have Features</h1>
+			<span>
+			Core Features:
+			<ul>
+				<li>Organization of crimes by location onto a map overlay</li>
+				<li>Filtering of crimes by time, date, location region, and type</li>
+				<li>Crime statistics by region, type of crime, and time</li>
+			</ul>
+			<br/>
+			Optional Features:
+			<ul>
+				<li>Filtering of crimes by description keyword</li>
+				<li>Sorting of crimes by item stolen or other important keywords</li>
+				<li>Organization of crime keywords by uniqueness</li>
+			</ul>
+		</span>
+
+			<h1>Project Schedule</h1>
+			<div class="indent">
+			<span>
+				March 30:&nbsp Have data scraped from WashU sites and wrangled (date formatted, geocoded)
+				<br/><br/>
+				April 6:&nbsp Prototype 1 – Data visualized onto a map overlay with basic filtering functionality (time, region)
+				<br/><br/>
+				April 13:&nbsp Have statistical designs implemented, like region mapping and time scales for each region, along with general trend statistics for crime density and type density
+				<br/><br/>
+				April 20:&nbsp Prototype 2 – Integrate navigation between general trend statistics and mapping. Implement hovers for region statistics and more advanced filtering
+				<br/><br/>
+				April 27:&nbsp Sorting/filtering of crimes by description keywords, determine uniqueness of crime description keywords and allow filtering by that if possible
+			</span>
+			</div>
+		</div>
+
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	</body>
+</html>

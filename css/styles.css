@@ -1,0 +1,10 @@
+.content {
+	padding: 50px 100px;
+}
+.indent {
+	margin-left: 100px;
+}
+
+.indent img {
+	border: 1px solid black;
+}
