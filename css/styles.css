@@ -8,3 +8,7 @@
 .indent img {
 	border: 1px solid black;
 }
+#station-map {
+	width: 100%;
+	height: 600px;
+}
