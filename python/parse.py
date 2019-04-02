@@ -18,6 +18,6 @@ with open('raw/all_parsed.csv', mode='w', newline='') as parsed:
                 if index == 0:
                     writer.writerow([row[0], row[2], "Type", row[10], row[11], row[12], row[18], row[19]])
                 else:
-                    x2, y2 = transform(inProj, outProj, float(row[18]) - 50000, float(row[19]) - 5000)
+                    x2, y2 = transform(inProj, outProj, float(row[18]) - 107500, float(row[19]) + 551000)
                     writer.writerow([row[0], row[2], types[int(int(row[8])/10000) - 1], row[10], row[11], row[12],
                                      y2, x2])
