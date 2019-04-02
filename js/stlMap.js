@@ -1,4 +1,4 @@
-StationMap = function(_parentElement, _data,_coordinates) {
+StlMap = function(_parentElement, _data,_coordinates) {
     // this.parentElement = _parentElement;
     this.data = _data;
     this.coordinates = _coordinates;
@@ -6,10 +6,10 @@ StationMap = function(_parentElement, _data,_coordinates) {
 };
 
 /*
- *  Initialize station map
+ *  Initialize STL map
  */
 
-StationMap.prototype.initVis = function() {
+StlMap.prototype.initVis = function() {
     var vis = this;
     L.Icon.Default.imagePath="images/";
     vis.map = L.map('station-map').setView(this.coordinates, 13);
@@ -36,7 +36,7 @@ StationMap.prototype.initVis = function() {
  *  Data wrangling
  */
 
-StationMap.prototype.wrangleData = function() {
+StlMap.prototype.wrangleData = function() {
     var vis = this;
 
     vis.updateVis();
@@ -44,6 +44,6 @@ StationMap.prototype.wrangleData = function() {
 };
 
 
-StationMap.prototype.updateVis = function() {
+StlMap.prototype.updateVis = function() {
 
 };
