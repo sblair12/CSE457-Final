@@ -9,8 +9,6 @@ function loadData() {
     for(var i =0; i<allData.length;i++){
         allData[i].XCoord = +allData[i].XCoord;
         allData[i].YCoord = +allData[i].YCoord;
-        allData[i].XCoord =  allData[i].XCoord/10000;
-        allData[i].YCoord =  allData[i].YCoord/10000;
     }
         console.log(allData);
 
