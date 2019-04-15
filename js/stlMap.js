@@ -38,7 +38,6 @@ StlMap.prototype.initVis = function() {
         // iconCreateFunction: defineClusterIcon
     });
     markers.on('clustermouseover', function (cluster) {
-        console.log(cluster.layer.getAllChildMarkers());
         vis.statistics.updateVis(cluster.layer.getAllChildMarkers().map(x => x.options))
         //cluster.layer.bindPopup("<div id='popup-content'></div>").openPopup();
     });
