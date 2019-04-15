@@ -1,14 +1,20 @@
 .content {
 	padding: 50px 100px;
 }
+.content-main {
+    display: flex;
+}
 .indent {
 	margin-left: 100px;
 }
-
 .indent img {
 	border: 1px solid black;
 }
 #station-map {
-	width: 100%;
+	width: 60%;
 	height: 600px;
+}
+#statistics {
+    width: 40%;
+    height: 600px;
 }

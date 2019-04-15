@@ -1,7 +1,8 @@
-StlMap = function(_parentElement, _data,_coordinates) {
-    // this.parentElement = _parentElement;
+StlMap = function(_parentElement, _data,_coordinates, _statistics) {
+    this.parentElement = _parentElement;
     this.data = _data;
     this.coordinates = _coordinates;
+    this.statistics = _statistics;
     this.initVis();
 };
 
@@ -12,7 +13,7 @@ StlMap = function(_parentElement, _data,_coordinates) {
 StlMap.prototype.initVis = function() {
     var vis = this;
     L.Icon.Default.imagePath="images/";
-    vis.map = L.map('station-map').setView(this.coordinates, 13);
+    vis.map = L.map(vis.parentElement).setView(this.coordinates, 13);
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(vis.map);
@@ -33,6 +34,22 @@ StlMap.prototype.initVis = function() {
     var iconColor;
     //MarkerCluster library to cluster the data so the website does not lag
     var markers = L.markerClusterGroup({ chunkedLoading: true });
+    markers.on('clustermouseover', function (cluster) {
+        console.log(cluster.layer.getAllChildMarkers());
+        //cluster.layer.bindPopup("<div id='popup-content'></div>").openPopup();
+    });
+    // markers.on('clustermouseout', function (cluster) {
+    //     console.log(cluster.layer.getAllChildMarkers());
+    //     cluster.layer.closePopup();
+    // });
+    CustomMarker = L.Marker.extend({
+        Complaint: "",
+        DateOccur: "",
+        Description: "",
+        Address: "",
+        Street: "",
+        Type: ""
+    });
     for(var i = 0; i < this.data.length; i++){
         var popupContent = "<strong>" + this.data[i].Description + "</strong> <br/>";
         popupContent += " Date Occured: " + this.data[i].DateOccur + "<br/>";
@@ -62,7 +79,15 @@ StlMap.prototype.initVis = function() {
         else{
             iconColor = blueIcon;
         }
-        var marker = L.marker(location,{icon: iconColor});
+        var marker = new CustomMarker(location,{
+            icon: iconColor,
+            Complaint: this.data[i].Complaint,
+            DateOccur: this.data[i].DateOccur,
+            Description: this.data[i].Description,
+            Address: this.data[i].ILEADSAddress,
+            Street: this.data[i].ILEADSStreet,
+            Type: this.data[i].Type
+        });
         marker.bindPopup(popupContent);
         markers.addLayer(marker);
     }
