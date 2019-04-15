@@ -18,6 +18,6 @@ Statistics.prototype.initVis = function() {
         .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 };
 
-Statistics.prototype.updateVis = function() {
-
+Statistics.prototype.updateVis = function(data) {
+    console.log(data);
 };

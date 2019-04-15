@@ -11,7 +11,7 @@ types = ["Homicide", "Rape", "Robbery", "Assault", "Burglary", "Larceny", "Auto 
 
 with open('raw/all_parsed.csv', mode='w', newline='') as parsed:
     writer = csv.writer(parsed, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-    with open('raw/all.csv', newline='') as csvfile:
+    with open('output/all.csv', newline='') as csvfile:
         rowreader = csv.reader(csvfile)
         for index, row in enumerate(rowreader):
             if row[18] != "0" and row[19] != "0":
