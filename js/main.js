@@ -1,4 +1,5 @@
 var allData = [];
+var stlMap;
 
 loadData();
 
@@ -18,5 +19,5 @@ function loadData() {
 
 
 function createVis() {
-    var stlMap = new StationMap("map",allData,[38.630280, -90.200310]);
+    stlMap = new StlMap("map",allData,[38.631176, -90.252077]);
 }
