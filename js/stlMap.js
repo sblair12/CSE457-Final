@@ -35,12 +35,11 @@ StlMap.prototype.initVis = function() {
     //MarkerCluster library to cluster the data so the website does not lag
     var markers = L.markerClusterGroup({ chunkedLoading: true,
         maxClusterRadius: 2*30,
-        iconCreateFunction: defineClusterIcon,
-        animate: true,
+        // iconCreateFunction: defineClusterIcon
     });
-
     markers.on('clustermouseover', function (cluster) {
         // console.log(cluster.layer.getAllChildMarkers());
+        vis.statistics.updateVis(cluster.layer.getAllChildMarkers().map(x => x.options))
         //cluster.layer.bindPopup("<div id='popup-content'></div>").openPopup();
     });
     // markers.on('clustermouseout', function (cluster) {
@@ -150,7 +149,6 @@ function defineClusterIcon(cluster){
         pieClass: 'cluster-pie',
         pieLabel: n,
         pieLabelClass: 'marker-cluster-pie-label',
-
     }),
         myIcon = new L.DivIcon({
             html: html,

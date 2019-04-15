@@ -9,7 +9,7 @@ types = ["Homicide", "Rape", "Robbery", "Assault", "Burglary", "Larceny", "Auto 
          "Drug Abuse", "Gambling", "Neglect", "DUI", "Liquor Related", "Drunkenness", "Disorderly Conduct", "Vagrancy",
          "Other Offenses", "Suspicion", "Curfew", "Runaways"]
 
-with open('raw/all_parsed.csv', mode='w', newline='') as parsed:
+with open('output/all_parsed.csv', mode='w', newline='') as parsed:
     writer = csv.writer(parsed, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
     with open('raw/all.csv', newline='') as csvfile:
         rowreader = csv.reader(csvfile)
