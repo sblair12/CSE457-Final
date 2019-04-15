@@ -35,7 +35,7 @@ StlMap.prototype.initVis = function() {
     //MarkerCluster library to cluster the data so the website does not lag
     var markers = L.markerClusterGroup({ chunkedLoading: true,
         maxClusterRadius: 2*30,
-        // iconCreateFunction: defineClusterIcon
+        iconCreateFunction: defineClusterIcon
     });
     markers.on('clustermouseover', function (cluster) {
         // console.log(cluster.layer.getAllChildMarkers());
