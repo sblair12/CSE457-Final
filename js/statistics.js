@@ -38,7 +38,7 @@ Statistics.prototype.initVis = function(data) {
 Statistics.prototype.updateVis = function(data) {
     let vis = this;
     let hours = [];
-    for(var i = 0; i < 24; i++) {
+    for(var i = 0; i < 25; i++) {
         hours.push(0);
     }
     data.forEach((elem) => {
@@ -69,7 +69,7 @@ Statistics.prototype.updateVis = function(data) {
 
     var xAxis = d3.axisBottom()
         .scale(vis.x)
-        .tickValues(vis.x.domain().filter(function(d,i){ return !(i%2)}));
+        .tickValues(vis.x.domain().filter(function(d,i){ return !(i%6)}));
     var yAxis = d3.axisLeft()
         .scale(vis.y);
 

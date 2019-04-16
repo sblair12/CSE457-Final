@@ -17,6 +17,37 @@ StlMap.prototype.initVis = function() {
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(vis.map);
+    //MarkerCluster library to cluster the data so the website does not lag
+
+    vis.updateMap(vis.data);
+};
+
+StlMap.prototype.updateMap = function(newData) {
+    var vis = this;
+    vis.data = newData;
+    vis.map.eachLayer((layer) => {
+        if (layer._url !== "http://{s}.tile.osm.org/{z}/{x}/{y}.png") {
+            vis.map.removeLayer(layer);
+        }
+    });
+    var markers = L.markerClusterGroup({ chunkedLoading: true,
+        maxClusterRadius: 2*30,
+        iconCreateFunction: defineClusterIcon
+    });
+    markers.on('clustermouseover', function (cluster) {
+        // console.log(cluster.layer.getAllChildMarkers());
+        vis.statistics.updateVis(cluster.layer.getAllChildMarkers().map(x => x.options))
+        //cluster.layer.bindPopup("<div id='popup-content'></div>").openPopup();
+    });
+
+    CustomMarker = L.Marker.extend({
+        Complaint: "",
+        DateOccur: "",
+        Description: "",
+        Address: "",
+        Street: "",
+        Type: ""
+    });
     var LeafIcon = L.Icon.extend({
         options: {
             iconAnchor:   [13, 33], // point of the icon which will correspond to marker's location
@@ -32,30 +63,7 @@ StlMap.prototype.initVis = function() {
     var yellowIcon = new LeafIcon({iconUrl: "images/marker-icon-yellow.png"});
     var blueIcon = new LeafIcon({iconUrl: "images/marker-icon.png"});
     var iconColor;
-    //MarkerCluster library to cluster the data so the website does not lag
-    var markers = L.markerClusterGroup({ chunkedLoading: true,
-        maxClusterRadius: 2*30,
-        iconCreateFunction: defineClusterIcon
-    });
-    markers.on('clustermouseover', function (cluster) {
-        // console.log(cluster.layer.getAllChildMarkers());
-        vis.statistics.updateVis(cluster.layer.getAllChildMarkers().map(x => x.options))
-        //cluster.layer.bindPopup("<div id='popup-content'></div>").openPopup();
-    });
-    // markers.on('clustermouseout', function (cluster) {
-    //     console.log(cluster.layer.getAllChildMarkers());
-    //     cluster.layer.closePopup();
-    // });
-    CustomMarker = L.Marker.extend({
-        Complaint: "",
-        DateOccur: "",
-        Description: "",
-        Address: "",
-        Street: "",
-        Type: ""
-    });
     //http://bl.ocks.org/gisminister/10001728
-
     for(var i = 0; i < this.data.length; i++){
         var popupContent = "<strong>" + this.data[i].Description + "</strong> <br/>";
         popupContent += " Date Occured: " + this.data[i].DateOccur + "<br/>";
@@ -99,8 +107,6 @@ StlMap.prototype.initVis = function() {
         markers.addLayer(marker);
     }
     this.map.addLayer(markers);
-    vis.wrangleData();
-
 };
 
 function defineClusterIcon(cluster){
@@ -168,7 +174,6 @@ function bakeThePie(options) {
         origo = 26, //Center coordinate
         w = origo*2, //width and height of the svg element
         h = w;
-    console.log(dataTotal);
 
     var pie = d3.pie();
     var w = 50;

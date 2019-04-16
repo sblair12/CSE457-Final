@@ -90,3 +90,26 @@
 .bar {
 	fill: purple;
 }
+#type-select {
+	width: 20%;
+	float: right;
+}
+#month-select {
+	float: right;
+	width: 80%;
+}
+.controls {
+	margin: 20px;
+	display: flex;
+	justify-content: space-between;
+}
+.slider {
+	width: 60%;
+}
+#selected {
+	font-weight: bold;
+}
+#month-enabled {
+	margin-left: 5px;
+	margin-right: 20px;
+}

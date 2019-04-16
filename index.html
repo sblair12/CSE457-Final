@@ -38,6 +38,15 @@
         </div>
     </nav>
 </div>
+<div class="controls">
+    <div class="slider">
+        <label for="month-enabled">Filter</label><input id="month-enabled" type="checkbox"/>
+        <span id="selected">All Months</span>
+        <input id="month-select" type="range" min="0" max="11" value="0" list="month-ticks" disabled/>
+        <datalist id="month-ticks"></datalist>
+    </div>
+    <select class="form-control" id="type-select"></select>
+</div>
 <div class="content-main">
     <div id="station-map"></div>
     <div id="statistics"></div>
