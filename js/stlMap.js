@@ -1,9 +1,11 @@
+var thisObject;
 StlMap = function(_parentElement, _data,_coordinates, _statistics) {
     this.parentElement = _parentElement;
     this.data = _data;
     this.coordinates = _coordinates;
     this.statistics = _statistics;
     this.initVis();
+    thisObject = this;
 };
 
 /*
@@ -12,6 +14,8 @@ StlMap = function(_parentElement, _data,_coordinates, _statistics) {
 
 StlMap.prototype.initVis = function() {
     var vis = this;
+    vis.color = d3.scaleOrdinal(d3.schemeCategory20);
+    // console.log(vis.color);
     L.Icon.Default.imagePath="images/";
     vis.map = L.map(vis.parentElement).setView(this.coordinates, 13);
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -35,7 +39,7 @@ StlMap.prototype.initVis = function() {
     //MarkerCluster library to cluster the data so the website does not lag
     var markers = L.markerClusterGroup({ chunkedLoading: true,
         maxClusterRadius: 2*30,
-        iconCreateFunction: defineClusterIcon
+        iconCreateFunction: vis.icon
     });
     markers.on('clustermouseover', function (cluster) {
         // console.log(cluster.layer.getAllChildMarkers());
@@ -101,46 +105,195 @@ StlMap.prototype.initVis = function() {
     this.map.addLayer(markers);
     vis.wrangleData();
 
+    //https://d3-legend.susielu.com/
+    var linear = d3.scaleOrdinal()
+        .domain(["Homicide", "Rape", "Robbery", "Assault", "Burglary", "Larceny", "Auto Theft", "Other Assault", "Arson",
+            "Forgery", "Fraud", "Embezzlement"])
+        .range([ vis.color(0), vis.color(1), vis.color(2), vis.color(3),vis.color(4),vis.color(5),vis.color(6),
+                vis.color(7),vis.color(8),vis.color(9),vis.color(10),vis.color(11)]);
+    var svg = d3.select("#legend")
+        .append("svg")
+        .attr("height","80")
+        .attr("width","1485");
+    svg.append("g")
+        .attr("class", "legendLinear")
+        .attr("transform", "translate(20,20)");
+    var legendLinear = d3.legendColor()
+        .shapeWidth(120)
+        .cells(10)
+        .orient('horizontal')
+        .scale(linear);
+
+    svg.select(".legendLinear")
+        .call(legendLinear);
+    var linear = d3.scaleOrdinal()
+        .domain(["Stolen Property", "Vandalism", "Weapons", "Prostitution", "Sex Offenses",
+            "Drug Abuse", "Gambling", "Neglect", "DUI", "Liquor Related", "Drunkenness", "Disorderly Cond...", "Vagrancy",
+            "Other Offenses", "Suspicion", "Curfew", "Runaways"])
+        .range([vis.color(12),vis.color(13), vis.color(14),vis.color(15),vis.color(16),vis.color(17),vis.color(18),vis.color(19),vis.color(20),
+            vis.color(21),vis.color(22),vis.color(23),vis.color(24),vis.color(25),vis.color(26),vis.color(27),
+            vis.color(28)]);
+    var svg = d3.select("#legend")
+        .append("svg")
+        .attr("height","80")
+        .attr("width","1484");
+    svg.append("g")
+        .attr("class", "legendLinear")
+        .attr("transform", "translate(20,20)");
+    var legendLinear = d3.legendColor()
+        .shapeWidth(120)
+        .cells(10)
+        .orient('horizontal')
+        .scale(linear);
+
+    svg.select(".legendLinear")
+        .call(legendLinear);
+
+
+};
+StlMap.prototype.createPieCharts = function(options){
+    var vis = this;
+    var data = options.data;
+    var dataTotal = options.data2;
+        pieClass = options.pieClass?options.pieClass:'marker-cluster-pie', //Class for the whole pie
+        pieLabelClass = options.pieLabelClass?options.pieLabelClass:'marker-cluster-pie-label',//Class for the pie label
+        center = 26, //Center coordinate
+        w = center*2,
+        h = w;
+
+    var pie = d3.pie();
+    var width = 50;
+    var height = 50;
+    var outerRadius = width/2;
+    var innerRadius = width/5;
+    var arc = d3.arc()
+        .innerRadius(innerRadius)
+        .outerRadius(outerRadius);
+    var svg = document.createElementNS(d3.namespaces, 'svg');
+    // https://www.oreilly.com/library/view/interactive-data-visualization/9781491921296/ch13.html#chapter11-layouts
+    var overallSvg = d3.select(svg)
+        .data([data])
+        .attr("width", '50')
+        .attr("height", '50')
+        .attr("class", pieClass);
+    var arcs = overallSvg.selectAll("g.arc")
+        .data(pie(data))
+        .enter()
+        .append('svg:g')
+        .attr("class", "arc")
+        .attr("transform", "translate(" + outerRadius + ", " + outerRadius + ")");
+    arcs.append("svg:path")
+        .attr("fill", function(d, i) {
+            return vis.color(i);
+        })
+        .attr("d", arc);
+    overallSvg.append('text')
+        .attr('x',center)
+        .attr('y',center)
+        .attr('class', pieLabelClass)
+        .attr('text-anchor', 'middle')
+        .attr('dy','.3em')
+        .text(dataTotal);
+    // Return the svg-markup rather than the actual element
+    return serializeXmlNode(svg);
 };
 
-function defineClusterIcon(cluster){
-    var children = cluster.getAllChildMarkers(), n = children.length,
-        strokeWidth = 1, r = 25,  iconDim = (r+strokeWidth)*2;
-
+StlMap.prototype.icon = function(cluster) {
+    var children = cluster.getAllChildMarkers(), n = children.length;
     var holder = [0,0,0,0,0,0,0,0];
     var holderTotal = 0;
     for(var i =0; i<n;i++){
-        if(children[i].options.Type === "Larceny"){
+        if(children[i].options.Type === "Homicide"){
             holder[0] +=1;
         }
-        else if(children[i].options.Type === 'Robbery' || children[i].options.Type === "Burglary"){
+        else if(children[i].options.Type === 'Rape' ){
             holder[1] +=1;
         }
-        else if(children[i].options.Type === "Fraud"){
+        else if(children[i].options.Type === "Robbery"){
             holder[2] +=1;
         }
-        else if(children[i].options.Type === "Drug Abuse"){
+        else if(children[i].options.Type === "Assault"){
             holder[3] +=1;
         }
-        else if(children[i].options.Type === 'Auto Theft'){
+        else if(children[i].options.Type === 'Burglary'){
             holder[4] +=1;
         }
-        else if(children[i].options.Type === 'Assault' || children[i].type === 'Weapons'){
+        else if(children[i].options.Type === 'Larceny'){
             holder[5] +=1;
         }
-        else if(children[i].options.Type === 'Arson'){
+        else if(children[i].options.Type === 'Auto Theft'){
             holder[6] +=1;
         }
-        else{
+        else if(children[i].options.Type === "Other Assault"){
             holder[7] +=1;
         }
+        else if(children[i].options.type === 'Arson'){
+            holder[8] +=1;
+        }
+        else if(children[i].options.type === 'Forgery'){
+            holder[9] +=1;
+        }
+        else if(children[i].options.type === 'Fraud'){
+            holder[10] +=1;
+        }
+        else if(children[i].options.type === 'Embezzlement'){
+            holder[11] +=1;
+        }
+        else if(children[i].options.type === 'Stolen Property'){
+            holder[12] +=1;
+        }
+        else if(children[i].options.type === 'Vandalism'){
+            holder[13] +=1;
+        }
+        else if(children[i].options.type === 'Weapons'){
+            holder[14] +=1;
+        }
+        else if(children[i].options.type === 'Prostitution'){
+            holder[15] +=1;
+        }
+        else if(children[i].options.type === 'Sex Offenses'){
+            holder[16] +=1;
+        }
+        else if(children[i].options.type === 'Drug Abuse'){
+            holder[17] +=1;
+        }
+        else if(children[i].options.type === 'Gambling'){
+            holder[18] +=1;
+        }
+        else if(children[i].options.type === 'Neglect'){
+            holder[19] +=1;
+        }
+        else if(children[i].options.type === 'DUI'){
+            holder[20] +=1;
+        }
+        else if(children[i].options.type === 'Liquor Related'){
+            holder[21] +=1;
+        }
+        else if(children[i].options.type === 'Drunkenness'){
+            holder[22] +=1;
+        }
+        else if(children[i].options.type === 'Disorderly Conduct'){
+            holder[23] +=1;
+        }
+        else if(children[i].options.type === 'Vagrancy'){
+            holder[24] +=1;
+        }
+        else if(children[i].options.type === 'Other Offenses'){
+            holder[25] +=1;
+        }
+        else if(children[i].options.type === 'Suspicion'){
+            holder[26] +=1;
+        }
+        else if(children[i].options.type === 'Curfew'){
+            holder[27] +=1;
+        }
+        else if(children[i].options.type === 'Runaways'){
+            holder[28] +=1;
+        }
         holderTotal++;
-        // console.log(children[i].options.Type);
     }
-    // console.log(holder);
     //view-source:https://leaflet.github.io/Leaflet.markercluster/example/marker-clustering-custom.html
-
-    html = bakeThePie({
+    html = thisObject.createPieCharts({
         data: holder,
         data2: holderTotal,
         strokeWidth: 1,
@@ -153,65 +306,11 @@ function defineClusterIcon(cluster){
         myIcon = new L.DivIcon({
             html: html,
             className: 'marker-cluster',
-            // iconSize: new L.Point(200, 200)
         });
 
     return myIcon;
-}
+};
 
-function bakeThePie(options) {
-    var data = options.data;
-    var dataTotal = options.data2;
-        pathClassFunc = options.pathClassFunc?options.pathClassFunc:function(){return '';}, //Class for each path
-        pieClass = options.pieClass?options.pieClass:'marker-cluster-pie', //Class for the whole pie
-        pieLabelClass = options.pieLabelClass?options.pieLabelClass:'marker-cluster-pie-label',//Class for the pie label
-        origo = 26, //Center coordinate
-        w = origo*2, //width and height of the svg element
-        h = w;
-    console.log(dataTotal);
-
-    var pie = d3.pie();
-    var w = 50;
-    var h = 50;
-    var color = d3.scaleOrdinal(d3.schemeCategory20);
-    var outerRadius = w/2;
-    var innerRadius = w/5;
-    var arc = d3.arc()
-        .innerRadius(innerRadius)
-        .outerRadius(outerRadius);
-    var svg = document.createElementNS(d3.namespaces, 'svg');
-    //https://www.oreilly.com/library/view/interactive-data-visualization/9781491921296/ch13.html#chapter11-layouts
-    var vis = d3.select(svg)
-        .data([data])
-        .attr("width", '50')
-        .attr("height", '50')
-        .attr("class", pieClass);
-
-    var arcs = vis.selectAll("g.arc")
-        .data(pie(data))
-        .enter()
-        .append('svg:g')
-        .attr("class", "arc")
-        .attr("transform", "translate(" + outerRadius + ", " + outerRadius + ")");
-    arcs.append("svg:path")
-        .attr("fill", function(d, i) {
-            return color(i);
-        })
-        .attr("d", arc);
-
-    vis.append('text')
-        .attr('x',origo)
-        .attr('y',origo)
-        .attr('class', pieLabelClass)
-        .attr('text-anchor', 'middle')
-        //.attr('dominant-baseline', 'central')
-        /*IE doesn't seem to support dominant-baseline, but setting dy to .3em does the trick*/
-        .attr('dy','.3em')
-        .text(dataTotal);
-
-    // Return the svg-markup rather than the actual element
-    return serializeXmlNode(svg);
-}
 
 function serializeXmlNode(xmlNode) {
     if (typeof window.XMLSerializer != "undefined") {

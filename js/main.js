@@ -8,7 +8,6 @@ loadData();
 function loadData() {
     d3.csv("python/output/all_parsed_test.csv", function (error, data_in) {
         allData = data_in;
-        var holder = [0,0,0,0,0,0,0,0];
     for(var i =0; i<allData.length;i++){
         allData[i].XCoord = +allData[i].XCoord;
         allData[i].YCoord = +allData[i].YCoord;
