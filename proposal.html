@@ -27,7 +27,7 @@
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 							<a class="dropdown-item" href="proposal.html">Process Book</a>
-							<a class="dropdown-item" href="https://github.com/sblair12/CSE457-Final" target="_blank">GitHub <i class="fas fa-external-link-alt"></i></a>
+							<a class="dropdown-item" href="https://github.com/washuvis/crime/" target="_blank">GitHub <i class="fas fa-external-link-alt"></i></a>
 						</div>
 					</li>
 				</ul>
@@ -42,7 +42,7 @@
 			<br/>
 			Shane Blair – sblair (448740) – sblair@wustl.edu
 			<br/>
-			<a href="https://github.com/sblair12/CSE457-Final/">			https://github.com/sblair12/CSE457-Final/</a>
+			<a href="https://github.com/washuvis/crime/">			https://github.com/washuvis/crime/ (Private)</a>
 		</span>
 
 			<h1>Background and Motivation</h1>
@@ -72,7 +72,7 @@
 		</span>
 
 			<h1>Data</h1>
-			<span>
+			<span class="revised">
 			Our data will be collected from WashU’s Daily Crime Log and Crime Alerts Archive:
 			<ul>
 				<li>
@@ -83,6 +83,14 @@
 				</li>
 			</ul>
 		</span>
+			<span>
+				Our data is now taken from the St. Louis Metropolitan Police Department (SLMPD) website:
+				<ul>
+					<li>
+						<a href="https://www.slmpd.org/Crimereports.shtml">https://www.slmpd.org/Crimereports.shtml</a>
+					</li>
+				</ul>
+			</span>
 
 			<h1>Data Processing</h1>
 			<span>
@@ -137,6 +145,71 @@
 				<br/><br/>
 				April 27:&nbsp Sorting/filtering of crimes by description keywords, determine uniqueness of crime description keywords and allow filtering by that if possible
 			</span>
+			</div>
+
+			<h1>Milestone 1</h1>
+			<div class="indent">
+				<h4>Completed</h4>
+				<ul>
+					<li>
+						Gather data from the SLMPD website. We realized with Professor Ottley's suggestion, we realize that we could not gather geolocation data from WUSTL's crime archives. This data is much more complete, allowing us to map properly.
+					</li>
+					<li>
+						Convert coordinates from State Plane Coordinate System to traditional LatLong GPS Coordinates (WGS84). Standardize crime types following the Uniform Crime Reporting codes
+						<ul>
+							<li><strong>Note:</strong> this was the most complicated task of this Milestone, due to the fact that the coordinates given by SLMPD were incorrect. They documented that their coordinates were based on the NAD83 standard, a State Place Coordinate System
+								that is separated into different regions. However, a region was not specified. There are regions available for Missouri (EPSG:2815 - EPSG:2817), but all of these regions placed our coordinates somewhere in Michigan. We ended up using an algorithm here
+								to determine the region with the closest coordinates to St. Louis and translating the points from there. Transforming these coordinates in Python using Pyproj was very resource intensive here, taking over 20 minutes for just 1000 points.
+							</li>
+						</ul>
+					</li>
+					<li>
+						Layout markers on the map for each crime data point and establish clusters to prevent lag. We have over 3000 data points at this point and this can cause our systems to lag heavily.
+					</li>
+				</ul>
+			</div>
+
+			<h1>Milestone 2</h1>
+			<div class="indent">
+				<h4>Completed</h4>
+				<ul>
+					<li>Complete compiling and gathering data from the last 12 months. We now have over 40000 data points in our collection.
+					</li>
+					<li>
+						Restructure our layout to better fit the completion of our goals. Our site is now separated into two main panes, one for the map and one for the dynamic time scaled bar chart, plotting the frequency of crimes in the region that is hovered over. We felt this design
+						change will allow for the user to interact with the data on the map without having to navigate to another view.
+						<ul>
+							<li><img src="sketches/sketch_final.jpg" width="650px"></li>
+						</ul>
+					</li>
+					<li>
+						Clusters zoom in to the region on click, displaying the distributions of regions within the selected region. Hover also shows the bounds of the region as created with Marker Clusters.
+					</li>
+					<li>
+						Replace default cluster icons with our own pie charts for each region. Each region's data set is then categorized in the pie chart, which can be seen at any level of zoom on the map. These pie charts update with changes to the data set or changes to the zoom.
+					</li>
+					<li>
+						On each cluster hover, create a time scale for the frequency of crime in that region. Users will be able to see the distribution of crimes over the course of 24 hours, as taken from the specified data set.
+					</li>
+					<li>
+						Allow for filtering by crime type via a dropdown. Selected type then filters the map, which will then allow the user to view time distributions based on that specific crime.
+					</li>
+					<li>
+						Allow for month filtering, so that the user can select a month to view. Month selector is a sliding range, so that the map can update in real time and display the total distributions for all crimes (or filtered crimes) as the user changes selections.
+						<ul>
+							Crime type filtering and month filtering work together with each other here.
+						</ul>
+					</li>
+					<li>
+						Create a legend for the crime type distributions
+					</li>
+				</ul>
+
+				<span><strong>Note</strong> here about data: We noticed that certain types of crimes, specifically crimes of sexual nature, were being filtered out of our map completely. We attributed this to a decision made when parsing the data to throw out values that have
+				coordinates entered as "(0, 0)". Looking back at our data, we noticed that most rape and sexual assault had an entered coordinate of (0, 0). This could be due to the fact that these types of crimes do not have a set location that can be reported in most cases,
+					or maybe there is a law enforcement procedure in place to omit the recording of the location. There could be other crime types with this issue as well, and we plan to investigate before our final submission.
+				</span>
+
 			</div>
 		</div>
 

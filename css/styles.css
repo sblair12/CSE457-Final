@@ -10,6 +10,9 @@
 .indent img {
 	border: 1px solid black;
 }
+.revised {
+	text-decoration: line-through;
+}
 #station-map {
 	width: 60%;
 	height: 600px;

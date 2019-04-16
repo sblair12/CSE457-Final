@@ -1,10 +1,13 @@
-# CSE457-Final
+# STL Crime Map
+# CSE457 Final
+### Joel Ki and Shane Blair
 
-https://sblair12.github.io/CSE457-Final/
+https://washuvis.github.io/crime/
 
-## Milestone 1
- * Process Book located under Source -> Process Book
- * Note: Using data from SLMPD led to issues with the coordinate system, as they use state plane NAD83 but do not specify which region that they use. There are hundreds of regions around the world for state plane coordinate mapping, so we tried to do a best fit by testing plane mappings on a coordinate point until we got the closest plane. The coordinates are shifted correctly but are not completely accurate, but so far the data looks good and is positioned well.
- 
- ## Resources
-  * https://github.com/Leaflet/Leaflet.markercluster
+* Process Book located under Source -> Process Book
+
+## Resources
+  * [Marker Cluster](https://github.com/Leaflet/Leaflet.markercluster) - Library for clustering leaflet markers to massive lag loading our data set.
+  * [d3 SVG Legend](https://d3-legend.susielu.com/) - Library to simplify legend creation
+  * [Custom pie chart clusters](http://bl.ocks.org/gisminister/10001728) - Resource for changing cluster icons to pie charts
+  * [Interactive Data Visualization for the Web](https://learning.oreilly.com/library/view/interactive-data-visualization/9781491921296/) - In-class textbook
